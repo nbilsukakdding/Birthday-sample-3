@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday, My Love!</title>
+    
+    <!-- Google Fonts & Font Awesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- File CSS Eksternal -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Canvas Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+    <!-- Backsound Music (Opsional) -->
+    <audio id="bgm" loop>
+        <source src="song.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- STAGE 0: PIN LOCK -->
+<div class="container active" id="stage0">
+    <h2>Who's There? 🤍</h2>
+    <p class="instruction">Masukkan PIN rahasia untuk membuka kejutan...</p>
+    <div class="pin-display" id="pinDisplay">••••</div>
+    <div class="pin-pad">
+        <button class="pin-btn" onclick="pressPin('1')">1</button>
+        <button class="pin-btn" onclick="pressPin('2')">2</button>
+        <button class="pin-btn" onclick="pressPin('3')">3</button>
+        <button class="pin-btn" onclick="pressPin('4')">4</button>
+        <button class="pin-btn" onclick="pressPin('5')">5</button>
+        <button class="pin-btn" onclick="pressPin('6')">6</button>
+        <button class="pin-btn" onclick="pressPin('7')">7</button>
+        <button class="pin-btn" onclick="pressPin('8')">8</button>
+        <button class="pin-btn" onclick="pressPin('9')">9</button>
+        <button class="pin-btn pin-clear" onclick="clearPin()"><i class="fa-solid fa-delete-left"></i></button>
+        <button class="pin-btn" onclick="pressPin('0')">0</button>
+        <button class="pin-btn pin-enter" onclick="checkPin()"><i class="fa-solid fa-heart"></i></button>
+    </div>
+    <p class="pin-error" id="pinError"></p>
+</div>
+   
+    <!-- STAGE 1: ENVELOPE -->
+    <div class="container" id="stage1">
+        <h2>Happy Birthday!</h2>
+        <p class="instruction">Ketuk amplop untuk membuka undangan...</p>
+        <div class="envelope-wrapper" onclick="openEnvelope()">
+            <div class="envelope" id="envelope">
+                <div class="seal"><i class="fa-solid fa-heart"></i></div>
+            </div>
+        </div>
+        <button class="btn" id="btn1" style="display:none;" onclick="nextStage(2)">Mulai Kejutan <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+
+    <!-- STAGE 2: SECRET DIARY -->
+    <div class="container" id="stage2">
+        <h2>My Secret Diary</h2>
+        <p class="instruction">Pesan spesial dari lubuk hatiku...</p>
+        <div class="diary-card">
+            Dearest Love,<br><br>
+            Selamat ulang tahun! Terima kasih telah hadir dan mewarnai setiap detik dalam hidupku. Semoga di usiamu yang baru ini, kamu selalu diberikan kebahagiaan, kesehatan, dan tercapai semua impianmu.<br><br>
+            Love always ❤️
+        </div>
+        <button class="btn" onclick="nextStage(3)">Lihat Kenangan Kita <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+
+    <!-- STAGE 3: OUR MEMORIES (PHOTOS) -->
+    <div class="container" id="stage3">
+        <h2>Our Memories</h2>
+        <p class="instruction">Geser / ketuk foto untuk melihat kenangan berikutnya!</p>
+        <div class="card-stack" onclick="nextPhoto()">
+            <div class="polaroid" style="transform: rotate(-3deg);">
+                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500" alt="Foto 1">
+                <div class="caption">Momen Indah #1 ❤️</div>
+            </div>
+            <div class="polaroid" style="transform: rotate(4deg);">
+                <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=500" alt="Foto 2">
+                <div class="caption">Senyum Favoritku ✨</div>
+            </div>
+            <div class="polaroid" style="transform: rotate(-1deg);">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500" alt="Foto 3">
+                <div class="caption">Selamanya Bersamamu 🌹</div>
+            </div>
+        </div>
+        <button class="btn" onclick="nextStage(4)">Saatnya Tiup Lilin! <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+
+    <!-- STAGE 4: CAKE & BLOW CANDLE -->
+    <div class="container" id="stage4">
+        <h2>Time for Cake!</h2>
+        <p class="instruction" id="cakeInstruction">Ketuk lilin untuk meniupnya dan buat permohonan!</p>
+        <div class="cake" onclick="blowCandle()">
+            <div class="candle"><div class="flame" id="flame"></div></div>
+            <div class="layer layer-top"></div>
+            <div class="layer layer-middle"></div>
+            <div class="layer layer-bottom"></div>
+            <div class="plate"></div>
+        </div>
+        <button class="btn" id="btn4" style="display:none;" onclick="nextStage(5)">Buat Harapan <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+
+    <!-- STAGE 5: FLOATING WISHES -->
+    <div class="container" id="stage5">
+        <h2>Floating Wishes</h2>
+        <p class="instruction">Pecahkan gelembung untuk melihat harapan!</p>
+        <div class="bubble-grid">
+            <div class="bubble" onclick="popBubble(this, 'Semoga selalu sehat & bahagia selalu!')">Stay Happy 😊</div>
+            <div class="bubble" onclick="popBubble(this, 'Semoga makin sukses dalam karier & cita-cita!')">Be Successful 🚀</div>
+            <div class="bubble" onclick="popBubble(this, 'Semoga impian besarmu segera terwujud!')">Dream Big 🌟</div>
+            <div class="bubble" onclick="popBubble(this, 'Selalu dicintai & dikelilingi orang baik!')">Always Loved ❤️</div>
+        </div>
+        <div class="wish-box" id="wishBox">Ketuk gelembung di atas...</div>
+        <button class="btn" onclick="nextStage(6)">Buka Hadiah <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+
+    <!-- STAGE 6: GIFT & FINAL SURPRISE -->
+    <div class="container" id="stage6">
+        <h2>Satu Hal Lagi...</h2>
+        <p class="instruction">Ketuk kado di bawah untuk membuka hadiah spesialmu!</p>
+        <div class="gift-box" onclick="openGift()">
+            <i class="fa-solid fa-gift" id="giftIcon"></i>
+        </div>
+        <div id="finalMessage" style="display:none; margin-top:15px; font-weight:600; color:#d63384;">
+            🎉 Selamat Ulang Tahun Sayang! Hadiah utamaku adalah cintaku selamanya! ❤️🎉
+        </div>
+    </div>
+
+    <!-- File JavaScript Eksternal -->
+    <script src="script.js"></script>
+</body>
+</html>
